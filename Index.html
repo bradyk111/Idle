@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Idle Incremental Game</title>
+    <!-- The viewport meta tag makes it work nicely on mobile/Safari -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      h1 {
+        margin-bottom: 0.5em;
+      }
+      #resource {
+        font-size: 2em;
+        margin-bottom: 1em;
+      }
+      button {
+        font-size: 1.2em;
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007aff;
+        color: white;
+      }
+      button:active {
+        background-color: #005bb5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Idle Incremental Game</h1>
+    <div id="resource">0</div>
+    <button id="clickBtn">Tap Me!</button>
+    <button id="upgradeBtn">Upgrade (Cost: 10)</button>
+
+    <script>
+      // Game variables
+      let resource = 0;
+      let resourcePerTap = 1;
+      let upgradeCost = 10;
+
+      // Get UI elements
+      const resourceDisplay = document.getElementById('resource');
+      const clickBtn = document.getElementById('clickBtn');
+      const upgradeBtn = document.getElementById('upgradeBtn');
+
+      // Update the displayed resource count and upgrade cost text
+      function updateDisplay() {
+        resourceDisplay.textContent = resource;
+        upgradeBtn.textContent = `Upgrade (Cost: ${upgradeCost})`;
+      }
+
+      // Button click to gain resource
+      clickBtn.addEventListener('click', () => {
+        resource += resourcePerTap;
+        updateDisplay();
+      });
+
+      // Button click to buy an upgrade that increases resource per tap
+      upgradeBtn.addEventListener('click', () => {
+        if (resource >= upgradeCost) {
+          resource -= upgradeCost;
+          resourcePerTap++;
+          // Increase the cost by 50% (rounded down)
+          upgradeCost = Math.floor(upgradeCost * 1.5);
+          updateDisplay();
+        } else {
+          alert('Not enough resources to upgrade!');
+        }
+      });
+
+      // Auto increment: add a fraction of resource per second
+      setInterval(() => {
+        // For example, gain half of resourcePerTap every second
+        resource += Math.floor(resourcePerTap / 2);
+        updateDisplay();
+      }, 1000);
+
+      // Initial display update
+      updateDisplay();
+    </script>
+  </body>
+</html>
